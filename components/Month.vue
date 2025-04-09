@@ -12,17 +12,17 @@
                 class="text-primary text-[24px] flex items-center text-center gap-1"
             >
                 <button
-                    @click="() => toPrevMonth()"
-                    class="w-[44px] h-[44px] flex justify-end items-center"
+                    @click="toPrevMonth"
+                    class="w-11 h-11 flex justify-end items-center"
                 >
-                    <ChevronLeftIcon class="w-[24px] h-[24px]" />
+                    <ChevronLeftIcon class="w-6 h-6" />
                 </button>
                 <span>{{ monthName }}, {{ year }}</span>
                 <button
-                    @click="() => toNextMonth()"
-                    class="w-[44px] h-[44px] flex justify-start items-center"
+                    @click="toNextMonth"
+                    class="w-11 h-11 flex justify-start items-center"
                 >
-                    <ChevronRightIcon class="w-[24px] h-[24px]" :width="88" />
+                    <ChevronRightIcon class="w-6 h-6" :width="88" />
                 </button>
             </div>
             <!-- End Start MONTH LABEL -->
@@ -51,36 +51,44 @@
 <script lang="ts" setup>
 import { months, monthsDays } from "../static/index";
 import { ChevronLeftIcon, ChevronRightIcon } from "../assets/icons";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { Button } from "~/ui";
 const today: Date = new Date();
 const month = ref<number>(Number(today.getMonth()));
-const monthName = ref<string>(months[month.value]); //computed
+const monthName = ref<string>(months[month.value]);
 const year = ref<number>(today.getFullYear());
-const weekDay = ref<number>(findWeekDay()); //computed
+const weekDay = ref<number>(findWeekDay());
 
 const WEEK_AMOUNT = 6;
 const selectedDay = ref<Date>(today);
 
-const toNextMonth = () => {
-    if (month.value >= 11) {
+const checkMonth = (m: number, y: number) => {
+    if (m > 11) {
         month.value = 0;
-        year.value = year.value + 1;
+        year.value = y + 1;
+    } else if (m < 0) {
+        month.value = 11;
+        year.value = y - 1;
     } else {
-        month.value = month.value + 1;
+        month.value = m;
+        year.value = y;
     }
+};
+const updateMonthData = () => {
     monthName.value = months[month.value];
     weekDay.value = findWeekDay();
 };
 
+const toNextMonth = () => {
+    month.value = month.value + 1;
+    checkMonth(month.value, year.value);
+    updateMonthData();
+};
+
 const toPrevMonth = () => {
     month.value = month.value - 1;
-    if (month.value < 0) {
-        month.value = 11;
-        year.value = year.value - 1;
-    }
-    monthName.value = months[month.value];
-    weekDay.value = findWeekDay();
+    checkMonth(month.value, year.value);
+    updateMonthData();
 };
 function findWeekDay() {
     const date = new Date(year.value, month.value, 1);
@@ -103,99 +111,38 @@ const selectDay = (
     clickedMonth?: number,
     clickedYear?: number
 ) => {
-    console.log(
-        clickedDay,
-        clickedMonth,
-        clickedYear,
-        monthsDays[clickedMonth]
-    );
-    clickedDay =
-        clickedDay < 1
-            ? monthsDays[clickedMonth ? clickedMonth : month.value]
-            : clickedDay > monthsDays[month.value + 1]
-            ? 1
-            : clickedDay;
-    console.log(clickedDay);
-    selectedDay.value = new Date(
-        clickedYear ? clickedYear : year.value,
-        clickedMonth ? clickedMonth : month.value,
-        clickedDay
-    );
-
     month.value = clickedMonth ? clickedMonth : month.value;
-    console.log("month", month.value);
-    monthName.value = months[month.value];
-    console.log("monthName", monthName.value);
     year.value = clickedYear ? clickedYear : year.value;
-    weekDay.value = findWeekDay();
+    selectedDay.value = new Date(year.value, month.value, clickedDay);
+    updateMonthData();
 };
 
+const moveSelectedDay = (offset: number) => {
+    const current = selectedDay.value;
+    const newDate = new Date(current);
+    newDate.setDate(current.getDate() + offset);
+
+    const newDay = newDate.getDate();
+    const newMonth = newDate.getMonth();
+    const newYear = newDate.getFullYear();
+
+    checkMonth(newMonth, newYear);
+    selectDay(newDay, newMonth, newYear);
+};
 const onKeyDown = (e: KeyboardEvent) => {
     e.preventDefault();
     switch (e.key) {
         case "ArrowUp":
-            let clickedMonth =
-                selectedDay.value.getDate() <= 7
-                    ? month.value - 1
-                    : month.value;
-            let clickedYear = year.value;
-            if (clickedMonth < 0) {
-                clickedMonth = 11;
-                clickedYear = year.value - 1;
-            }
-            selectDay(
-                selectedDay.value.getDate() - 7,
-                clickedMonth,
-                clickedYear
-            );
+            moveSelectedDay(-7);
             break;
         case "ArrowDown":
-            let clickedMonth1 =
-                selectedDay.value.getDate() >= monthsDays[month.value] - 7
-                    ? month.value - 1
-                    : month.value;
-            let clickedYear1 = year.value;
-            if (clickedMonth1 < 0) {
-                clickedMonth1 = 11;
-                clickedYear1 = year.value - 1;
-            }
-            selectDay(
-                selectedDay.value.getDate() + 7,
-                clickedMonth1,
-                clickedYear1
-            );
+            moveSelectedDay(+7);
             break;
         case "ArrowLeft":
-            let clickedMonth2 =
-                selectedDay.value.getDate() <= 1
-                    ? month.value - 1
-                    : month.value;
-            let clickedYear2 = year.value;
-            if (clickedMonth2 < 0) {
-                clickedMonth2 = 11;
-                clickedYear2 = year.value - 1;
-            }
-            selectDay(
-                selectedDay.value.getDate() - 1,
-                clickedMonth2,
-                clickedYear2
-            );
+            moveSelectedDay(-1);
             break;
         case "ArrowRight":
-            let clickedMonth3 =
-                selectedDay.value.getDate() >= monthsDays[month.value] - 1
-                    ? month.value + 1
-                    : month.value;
-            let clickedYear3 = year.value;
-            if (clickedMonth3 > 11) {
-                clickedMonth3 = 0;
-                clickedYear3 = year.value + 1;
-            }
-            selectDay(
-                selectedDay.value.getDate() + 1,
-                clickedMonth3,
-                clickedYear3
-            );
+            moveSelectedDay(+1);
             break;
     }
 };

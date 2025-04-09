@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO: left, right, up, down -->
     <div
         :class="[
             ' text-basic-text flex justify-center items-center shrink-0 hover:bg-primary cursor-pointer',
