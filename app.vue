@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="w-full h-full" >
     <App />
   </div>
 </template>
 <script lang="ts" setup>
 import App from "./pages/app.vue";
-import "./public/index.css"
+import "~/assets/css/tailwind.css";
 </script>
