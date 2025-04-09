@@ -1,8 +1,9 @@
 <template>
 <Month/>
+<Day/>
 </template>
 <script lang="ts" setup>
-import {Month} from '../components';
+import {Month, Day} from '../components';
 
 
 </script>
