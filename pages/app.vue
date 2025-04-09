@@ -1,8 +1,6 @@
 <template>
-<Month/>
+    <Month />
 </template>
 <script lang="ts" setup>
-import {Month} from '../components';
-
-
+import { Month } from "../components";
 </script>
