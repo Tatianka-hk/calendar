@@ -4,4 +4,7 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     compatibilityDate: "2025-04-06",
     modules: ["@nuxtjs/tailwindcss"],
+    nitro: {
+        plugins: ["~/server/db/connect.ts"],
+    },
 });

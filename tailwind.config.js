@@ -13,6 +13,8 @@ module.exports = {
                 secondary: "#00a4b8",
                 background: "#f5f9ff",
                 "basic-text": "#f1f1e6",
+                success: "#008a61",
+                error: "#963421",
             },
         },
     },
