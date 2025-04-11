@@ -31,6 +31,7 @@ import { Field, Button } from "~/ui";
 
 const email = ref<string>("");
 const password = ref<string>("");
+const { showSnackbar } = useSnackbar();
 
 //TODO: onEnter
 const singIn = async () => {
@@ -44,6 +45,7 @@ const singIn = async () => {
             password: password.value,
         }),
     });
-    console.log(res);
+    showSnackbar("Signed in", "success");
+    const data = await res.json();
 };
 </script>
