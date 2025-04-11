@@ -6,7 +6,10 @@
                 >Calendar</span
             >
         </div>
-        <div class="flex flex-col gap-[40px] items-center mt-[40px]">
+        <div
+            class="flex flex-col gap-[40px] items-center mt-[40px]"
+            @keydown.enter="singIn"
+        >
             <Field
                 type="email"
                 placeholder="Input email"
