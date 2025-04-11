@@ -4,10 +4,8 @@ import User from "../../models/User";
 
 export default defineEventHandler(async (event) => {
     const salt = process.env.SALT;
-    console.log(salt);
     const body = await readBody(event);
     const { email, password } = body;
-    console.log(email, password);
 
     // Validate email and password presence
     if (!email || !password) {

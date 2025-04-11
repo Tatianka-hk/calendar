@@ -6,7 +6,10 @@
                 >Calendar</span
             >
         </div>
-        <div class="flex flex-col gap-[40px] items-center mt-[40px]">
+        <div
+            class="flex flex-col gap-[40px] items-center mt-[40px]"
+            @keydown.enter="singUp"
+        >
             <Field
                 type="email"
                 placeholder="Input email"
@@ -28,20 +31,14 @@
 <script setup lang="ts">
 import { AppIcon } from "~/assets/icons";
 import { Field, Button } from "~/ui";
+import { checkFields } from "../utils/auth";
+import API from "~/utils/api";
 const email = ref<string>("");
 const password = ref<string>("");
-//TODO: onEnter
+
 const singUp = async () => {
-    const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            email: email.value,
-            password: password.value,
-        }),
-    });
+    if (!checkFields(email.value, password.value, "signup")) return;
+    const res = await API.AUTH.signUp(email.value, password.value);
     console.log(res);
 };
 </script>
