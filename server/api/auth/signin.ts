@@ -1,6 +1,7 @@
 import { defineEventHandler, readBody } from "h3";
 import bcrypt from "bcryptjs";
 import User from "../../models/User";
+import { JWTToken } from "../../jwt";
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const { email, password } = body;
@@ -39,8 +40,9 @@ export default defineEventHandler(async (event) => {
                 })
             );
         }
+        const jwtToken = new JWTToken().createToken(user.toJSON());
 
-        return user;
+        return { jwtToken };
     } catch (error) {
         console.error(error);
         return sendError(

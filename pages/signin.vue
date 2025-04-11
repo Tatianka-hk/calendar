@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { AppIcon } from "~/assets/icons";
 import { Field, Button } from "~/ui";
+import { checkFields } from "../utils/auth";
 
 const email = ref<string>("");
 const password = ref<string>("");
@@ -35,6 +36,7 @@ const { showSnackbar } = useSnackbar();
 
 //TODO: onEnter
 const singIn = async () => {
+    if (!checkFields(email.value, password.value, "signin")) return;
     const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -45,7 +47,12 @@ const singIn = async () => {
             password: password.value,
         }),
     });
-    showSnackbar("Signed in", "success");
+    if (res.status === 200) {
+        showSnackbar("Signed in", "success");
+    } else {
+        showSnackbar(res.statusText, "error");
+    }
     const data = await res.json();
+    console.log(data);
 };
 </script>

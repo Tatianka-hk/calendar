@@ -28,10 +28,12 @@
 <script setup lang="ts">
 import { AppIcon } from "~/assets/icons";
 import { Field, Button } from "~/ui";
+import { checkFields } from "../utils/auth";
 const email = ref<string>("");
 const password = ref<string>("");
 //TODO: onEnter
 const singUp = async () => {
+    if (!checkFields(email.value, password.value, "signup")) return;
     const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
