@@ -32,21 +32,13 @@
 import { AppIcon } from "~/assets/icons";
 import { Field, Button } from "~/ui";
 import { checkFields } from "../utils/auth";
+import API from "~/utils/api";
 const email = ref<string>("");
 const password = ref<string>("");
-//TODO: onEnter
+
 const singUp = async () => {
     if (!checkFields(email.value, password.value, "signup")) return;
-    const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            email: email.value,
-            password: password.value,
-        }),
-    });
+    const res = await API.AUTH.signUp(email.value, password.value);
     console.log(res);
 };
 </script>

@@ -14,7 +14,6 @@ export function checkFields(
     mode: modeOptions
 ) {
     const { showSnackbar } = useSnackbar();
-    console.log("sdj");
     if (!email) {
         showSnackbar("Email is required", "error");
         return false;

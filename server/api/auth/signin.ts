@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
         }
 
         const isValid = await bcrypt.compare(password + salt, user.password);
-
         if (!isValid) {
             return sendError(
                 event,
