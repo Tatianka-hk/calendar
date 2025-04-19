@@ -5,7 +5,7 @@
             v-model="events"
             group="events"
             @end="onDragEnd"
-            class="h-[100vh] w-[100vw] absolute top-0 left-0"
+            class="absolute top-0 left-0"
         >
             <template #item="{ element }">
                 <Event
