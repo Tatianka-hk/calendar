@@ -39,6 +39,6 @@ const password = ref<string>("");
 const singUp = async () => {
     if (!checkFields(email.value, password.value, "signup")) return;
     const res = await API.AUTH.signUp(email.value, password.value);
-    console.log(res);
+    console.log("res", res);
 };
 </script>

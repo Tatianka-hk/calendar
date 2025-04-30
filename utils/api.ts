@@ -10,9 +10,20 @@ const API = {
             });
             return res;
         },
-        getFetch: async (url: string) => {
-            const res = await fetch(url);
-            return res;
+        getFetch: async (url: string, token: string) => {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error(`Fetch error: ${res.status}`);
+            }
+
+            return res.json();
         },
     },
     AUTH: {
@@ -28,6 +39,10 @@ const API = {
                 email,
                 password,
             });
+            return res;
+        },
+        checkToken: async (token: string) => {
+            const res = await API.GENERAL.getFetch("/api/simple", token);
             return res;
         },
     },
