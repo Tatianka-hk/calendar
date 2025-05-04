@@ -48,6 +48,6 @@ const singIn = async () => {
         showSnackbar(res.statusText, "error");
     }
     const data = await res.json();
-    console.log(data);
+    localStorage.setItem("token", data.jwtToken);
 };
 </script>

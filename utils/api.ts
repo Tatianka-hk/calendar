@@ -1,17 +1,27 @@
 const API = {
     GENERAL: {
         postFetch: async (url: string, body: any) => {
+            const token = localStorage.getItem("token");
             const res = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token ?? ""}`,
                 },
                 body: JSON.stringify(body),
             });
             return res;
         },
         getFetch: async (url: string) => {
-            const res = await fetch(url);
+            const token = localStorage.getItem("token");
+            console.log(token);
+            const res = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             return res;
         },
     },
@@ -28,6 +38,13 @@ const API = {
                 email,
                 password,
             });
+            return res;
+        },
+    },
+    EVENTS: {
+        PREFIX: "/api/app/events",
+        getEvents: async () => {
+            const res = await API.GENERAL.getFetch("/api/app/events");
             return res;
         },
     },

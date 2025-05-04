@@ -1,6 +1,6 @@
 import jsonwebtoken from "jsonwebtoken";
 const { sign, verify } = jsonwebtoken;
-import { User } from "../types/user";
+import { User } from "../types";
 export class JWTToken {
     token: string;
     constructor(token: string) {
