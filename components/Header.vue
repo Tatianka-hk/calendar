@@ -12,7 +12,7 @@
 </template>
 <script lang="ts" setup>
 import { Button } from "~/ui";
-import { useDialog } from "../utils";
+import { useDialog } from "../composables";
 import { CreateEvent } from "./";
 const { opened, openDialog, closeDialog } = useDialog();
 </script>

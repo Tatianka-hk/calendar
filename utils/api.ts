@@ -44,12 +44,15 @@ const API = {
     EVENTS: {
         PREFIX: "/api/app/events",
         getEvents: async () => {
-            const res = await API.GENERAL.getFetch("/api/app/events");
+            const selectedDay = localStorage.getItem("selectedDay");
+            const res = await API.GENERAL.getFetch(
+                `${API.EVENTS.PREFIX}/get?day=${selectedDay}`
+            );
             return res;
         },
         createEvent: async (event: any) => {
             const res = await API.GENERAL.postFetch(
-                "/api/app/events/create",
+                `${API.EVENTS.PREFIX}/create`,
                 event
             );
             return res;

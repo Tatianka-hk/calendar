@@ -12,6 +12,7 @@
     "dependencies": {
         "bcryptjs": "^3.0.2",
         "chalk": "^5.4.1",
+        "date-fns": "^4.1.0",
         "dotenv": "^16.4.7",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.13.2",

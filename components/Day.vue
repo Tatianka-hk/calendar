@@ -12,7 +12,7 @@
                     :event="element"
                     :key="element.id"
                     :hour="element.hour"
-                    :header="element.header"
+                    :header="element.name"
                     :style="{
                         position: 'absolute',
                         top: calcTop(element.hour) + 'px',
@@ -27,24 +27,10 @@
 import { hours } from "~/static";
 import { Hour, Event } from "./";
 import draggable from "vuedraggable";
-
-const events = ref([
-    {
-        id: 0,
-        hour: "08:00",
-        header: "piscina",
-    },
-    {
-        id: 1,
-        hour: "08:30",
-        header: "gimnasios",
-    },
-    {
-        id: 2,
-        hour: "09:00",
-        header: "comer",
-    },
-]);
+import { useRemember } from "~/composables";
+const { getRemember } = useRemember();
+const selectedDay = getRemember("selectedDay");
+const events = API.EVENTS.getEvents();
 const getHourFromTop = (top: number) => {
     const totalHours = top / 62;
     const hour = Math.floor(totalHours);
