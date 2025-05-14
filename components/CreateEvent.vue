@@ -13,7 +13,7 @@
             v-model="description"
         />
         <Field
-            type="datetime"
+            type="datetime-local"
             placeholder="Input date and time"
             label="Date and time"
             v-model="datetime"
@@ -35,6 +35,13 @@ const createEvent = () => {
     //delete datetime to date and time
     const date = datetime.value.split("T")[0];
     const time = datetime.value.split("T")[1];
-    API.EVENTS.createEvent(name.value, description.value, date, time);
+    console.log(date, time);
+    const event = {
+        name: name.value,
+        description: description.value,
+        date: date,
+        time: time,
+    };
+    API.EVENTS.createEvent(event);
 };
 </script>

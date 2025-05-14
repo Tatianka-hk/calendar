@@ -3,8 +3,8 @@
         <div class="bg-white p-4">
             <slot></slot>
             <div class="flex gap-4 mt-6">
-                <Button @сlick="props.onSave"> Зберегти</Button>
-                <Button @сlick="props.onCancel"> Скасувати</Button>
+                <Button @click="props.onSave"> Зберегти</Button>
+                <Button @click="props.onCancel"> Скасувати</Button>
             </div>
         </div>
     </Dialog>

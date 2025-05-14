@@ -49,7 +49,7 @@ const API = {
         },
         createEvent: async (event: any) => {
             const res = await API.GENERAL.postFetch(
-                "/api/app/event/create",
+                "/api/app/events/create",
                 event
             );
             return res;
