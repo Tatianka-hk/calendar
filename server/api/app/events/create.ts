@@ -4,11 +4,8 @@ import Logger, { StatusEnum } from "../../../logger";
 const logger = new Logger();
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    console.log(body);
     const { name, description, date, time } = body;
-    console.log(name, description, date, time);
     const user = event.context.user;
-    console.log(user);
 
     try {
         const newEvent = new Event({

@@ -66,6 +66,13 @@ const API = {
             );
             return res;
         },
+        editALL: async (events: any) => {
+            const res = await API.GENERAL.postFetch(
+                `${API.EVENTS.PREFIX}/edit_all`,
+                events
+            );
+            return res;
+        },
     },
 };
 

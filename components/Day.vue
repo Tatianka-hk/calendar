@@ -26,6 +26,7 @@
 import { hours } from "~/static";
 import { Hour, Event } from "./";
 import draggable from "vuedraggable";
+import { onBeforeUnmount } from "vue";
 import { useRemember } from "~/composables";
 const { getRemember } = useRemember();
 const selectedDay = getRemember("selectedDay");
@@ -36,14 +37,37 @@ const getEvents = async () => {
         console.warn("No response from API.EVENTS.getEvents()");
         return [];
     }
-
-    console.log(res);
     const data = await res.json();
     if (data.statusCode === 401) {
         router.push("/signin");
     }
-    console.log(data);
     return data.events;
+};
+
+const editAllEvents = async () => {
+    const res = await API.EVENTS.editALL(events.value);
+    if (!res) {
+        console.warn("No response from API.EVENTS.editAllEvents()");
+        return [];
+    }
+    const data = await res.json();
+    if (data.statusCode === 401) {
+        router.push("/signin");
+    }
+};
+
+onMounted(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+});
+
+onUnmounted(() => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+});
+
+const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    editAllEvents();
+    event.preventDefault();
+    event.returnValue = "";
 };
 const events = ref(await getEvents());
 const getHourFromTop = (top: number) => {
