@@ -11,18 +11,17 @@
                 <Event
                     :event="element"
                     :key="element.id"
-                    :hour="element.hour"
+                    :hour="element.time"
                     :header="element.name"
                     :style="{
                         position: 'absolute',
-                        top: calcTop(element.hour) + 'px',
+                        top: calcTop(element.time) + 'px',
                     }"
                 />
             </template>
         </draggable>
     </div>
 </template>
-і
 <script lang="ts" setup>
 import { hours } from "~/static";
 import { Hour, Event } from "./";
@@ -30,7 +29,23 @@ import draggable from "vuedraggable";
 import { useRemember } from "~/composables";
 const { getRemember } = useRemember();
 const selectedDay = getRemember("selectedDay");
-const events = API.EVENTS.getEvents();
+
+const getEvents = async () => {
+    const res = await API.EVENTS.getEvents();
+    if (!res) {
+        console.warn("No response from API.EVENTS.getEvents()");
+        return [];
+    }
+
+    console.log(res);
+    const data = await res.json();
+    if (data.statusCode === 401) {
+        router.push("/signin");
+    }
+    console.log(data);
+    return data.events;
+};
+const events = ref(await getEvents());
 const getHourFromTop = (top: number) => {
     const totalHours = top / 62;
     const hour = Math.floor(totalHours);
@@ -43,7 +58,7 @@ const onDragEnd = (e: any) => {
     const top = e.originalEvent.clientY - e.to.getBoundingClientRect().top;
     const newHour = getHourFromTop(top);
     const movedIndex = e.newIndex;
-    events.value[movedIndex].hour = newHour;
+    events.value[movedIndex].time = newHour;
 };
 
 const calcTop = (hour: string) => {

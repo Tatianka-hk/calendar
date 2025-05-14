@@ -1,6 +1,9 @@
 const API = {
     GENERAL: {
         postFetch: async (url: string, body: any) => {
+            if (typeof window === "undefined") {
+                return null;
+            }
             const token = localStorage.getItem("token");
             const res = await fetch(url, {
                 method: "POST",
@@ -13,6 +16,9 @@ const API = {
             return res;
         },
         getFetch: async (url: string) => {
+            if (typeof window === "undefined") {
+                return null;
+            }
             const token = localStorage.getItem("token");
             console.log(token);
             const res = await fetch(url, {
@@ -44,6 +50,9 @@ const API = {
     EVENTS: {
         PREFIX: "/api/app/events",
         getEvents: async () => {
+            if (typeof window === "undefined") {
+                return null;
+            }
             const selectedDay = localStorage.getItem("selectedDay");
             const res = await API.GENERAL.getFetch(
                 `${API.EVENTS.PREFIX}/get?day=${selectedDay}`
