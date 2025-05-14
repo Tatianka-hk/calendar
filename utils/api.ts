@@ -47,6 +47,13 @@ const API = {
             const res = await API.GENERAL.getFetch("/api/app/events");
             return res;
         },
+        createEvent: async (event: any) => {
+            const res = await API.GENERAL.postFetch(
+                "/api/app/event/create",
+                event
+            );
+            return res;
+        },
     },
 };
 

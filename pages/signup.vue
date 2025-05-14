@@ -40,6 +40,8 @@ const singUp = async () => {
     if (!checkFields(email.value, password.value, "signup")) return;
     const res = await API.AUTH.signUp(email.value, password.value);
     const data = await res.json();
+    if (data.statusCode === 400) return;
+
     localStorage.setItem("token", data.jwtToken);
 };
 </script>

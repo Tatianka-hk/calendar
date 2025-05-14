@@ -14,6 +14,7 @@ export default defineEventHandler((event) => {
                 statusMessage: "Unauthorized",
             };
         }
+        event.context.user = decodedToken;
 
         console.log("decodedToken", decodedToken);
     } catch (e) {
