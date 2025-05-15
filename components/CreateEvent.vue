@@ -32,10 +32,8 @@ const description = ref<string>("");
 const datetime = ref<string>("");
 
 const createEvent = () => {
-    //delete datetime to date and time
     const date = datetime.value.split("T")[0];
     const time = datetime.value.split("T")[1];
-    console.log(date, time);
     const event = {
         name: name.value,
         description: description.value,

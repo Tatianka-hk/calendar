@@ -30,7 +30,6 @@ export default function useRemember() {
     };
 
     const handleStorageChange = (e: StorageEvent) => {
-        console.log(e);
         if (e.key && values.has(e.key)) {
             values.get(e.key)!.value = e.newValue;
         }

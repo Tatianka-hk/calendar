@@ -5,6 +5,8 @@ export default function useDialog() {
     const openDialog = () => {
         opened.value = true;
     };
-    const closeDialog = () => (opened.value = false);
+    const closeDialog = () => {
+        opened.value = false;
+    };
     return { opened, openDialog, closeDialog };
 }

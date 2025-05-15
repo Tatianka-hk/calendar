@@ -7,7 +7,7 @@
             <Button>Тиждень</Button>
             <Button>День</Button>
         </div>
-        <div v-if="opened"><CreateEvent @onClose="closeDialog" /></div>
+        <div v-if="opened"><CreateEvent :onClose="closeDialog" /></div>
     </div>
 </template>
 <script lang="ts" setup>

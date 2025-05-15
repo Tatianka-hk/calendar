@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
     try {
         for (const updatedEvent of eventsToUpdate) {
-            const { _id, name, description, date, time } = updatedEvent;
+            const { _id, date, time } = updatedEvent;
 
             if (!_id) continue;
 
@@ -29,8 +29,6 @@ export default defineEventHandler(async (event) => {
                 { _id, userID: user._id },
                 {
                     $set: {
-                        name,
-                        description,
                         date,
                         time,
                     },

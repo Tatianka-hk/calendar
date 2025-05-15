@@ -9,10 +9,14 @@
         >
             <template #item="{ element }">
                 <Event
+                    @edit="refreshEvents"
                     :event="element"
                     :key="element.id"
                     :hour="element.time"
                     :header="element.name"
+                    :description="element.description"
+                    :date="element.date"
+                    :id="element._id"
                     :style="{
                         position: 'absolute',
                         top: calcTop(element.time) + 'px',
@@ -70,6 +74,10 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
     event.returnValue = "";
 };
 const events = ref(await getEvents());
+
+const refreshEvents = async () => {
+    events.value = await getEvents();
+};
 const getHourFromTop = (top: number) => {
     const totalHours = top / 62;
     const hour = Math.floor(totalHours);

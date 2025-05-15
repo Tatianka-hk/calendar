@@ -73,6 +73,19 @@ const API = {
             );
             return res;
         },
+        editEvent: async (event: any) => {
+            const res = await API.GENERAL.postFetch(
+                `${API.EVENTS.PREFIX}/edit`,
+                event
+            );
+            return res;
+        },
+        deleteEvent: async (id: string) => {
+            const res = await API.GENERAL.getFetch(
+                `${API.EVENTS.PREFIX}/delete?id=${id}`
+            );
+            return res;
+        },
     },
 };
 
