@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
 
     try {
         const { _id, name, description, date, time } = eventToUpdate;
-        console.log(_id, name, description, date, time);
 
         await Event.updateOne(
             { _id: new ObjectId(_id) },
