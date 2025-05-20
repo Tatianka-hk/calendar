@@ -53,6 +53,7 @@ import { months, monthsDays } from "../static/index";
 import { ChevronLeftIcon, ChevronRightIcon } from "../assets/icons";
 import { ref } from "vue";
 import { Button } from "~/ui";
+import { useRemember } from "../composables";
 const today: Date = new Date();
 const month = ref<number>(Number(today.getMonth()));
 const monthName = ref<string>(months[month.value]);
@@ -61,7 +62,10 @@ const weekDay = ref<number>(findWeekDay());
 
 const WEEK_AMOUNT = 6;
 const selectedDay = ref<Date>(today);
-
+const { setRemember } = useRemember();
+onMounted(() => {
+    setRemember("selectedDay", selectedDay.value.toString());
+});
 const checkMonth = (m: number, y: number) => {
     if (m > 11) {
         month.value = 0;
@@ -114,6 +118,7 @@ const selectDay = (
     month.value = clickedMonth ? clickedMonth : month.value;
     year.value = clickedYear ? clickedYear : year.value;
     selectedDay.value = new Date(year.value, month.value, clickedDay);
+    setRemember("selectedDay", selectedDay.value.toString());
     updateMonthData();
 };
 

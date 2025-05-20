@@ -2,6 +2,7 @@
     <NuxtLayout>
         <NuxtPage />
         <Snackbar />
+        <div class="flex z-10" id="dialog"></div>
     </NuxtLayout>
 </template>
 <script setup lang="ts">

@@ -9,42 +9,75 @@
         >
             <template #item="{ element }">
                 <Event
+                    @edit="refreshEvents"
                     :event="element"
                     :key="element.id"
-                    :hour="element.hour"
-                    :header="element.header"
+                    :hour="element.time"
+                    :header="element.name"
+                    :description="element.description"
+                    :date="element.date"
+                    :id="element._id"
                     :style="{
                         position: 'absolute',
-                        top: calcTop(element.hour) + 'px',
+                        top: calcTop(element.time) + 'px',
                     }"
                 />
             </template>
         </draggable>
     </div>
 </template>
-і
 <script lang="ts" setup>
 import { hours } from "~/static";
 import { Hour, Event } from "./";
 import draggable from "vuedraggable";
+import { onBeforeUnmount } from "vue";
+import { useRemember } from "~/composables";
+const { getRemember } = useRemember();
+const selectedDay = getRemember("selectedDay");
 
-const events = ref([
-    {
-        id: 0,
-        hour: "08:00",
-        header: "piscina",
-    },
-    {
-        id: 1,
-        hour: "08:30",
-        header: "gimnasios",
-    },
-    {
-        id: 2,
-        hour: "09:00",
-        header: "comer",
-    },
-]);
+const getEvents = async () => {
+    const res = await API.EVENTS.getEvents();
+    if (!res) {
+        console.warn("No response from API.EVENTS.getEvents()");
+        return [];
+    }
+    const data = await res.json();
+    if (data.statusCode === 401) {
+        router.push("/signin");
+    }
+    return data.events;
+};
+
+const editAllEvents = async () => {
+    const res = await API.EVENTS.editALL(events.value);
+    if (!res) {
+        console.warn("No response from API.EVENTS.editAllEvents()");
+        return [];
+    }
+    const data = await res.json();
+    if (data.statusCode === 401) {
+        router.push("/signin");
+    }
+};
+
+onMounted(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+});
+
+onUnmounted(() => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+});
+
+const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    editAllEvents();
+    event.preventDefault();
+    event.returnValue = "";
+};
+const events = ref(await getEvents());
+
+const refreshEvents = async () => {
+    events.value = await getEvents();
+};
 const getHourFromTop = (top: number) => {
     const totalHours = top / 62;
     const hour = Math.floor(totalHours);
@@ -57,7 +90,7 @@ const onDragEnd = (e: any) => {
     const top = e.originalEvent.clientY - e.to.getBoundingClientRect().top;
     const newHour = getHourFromTop(top);
     const movedIndex = e.newIndex;
-    events.value[movedIndex].hour = newHour;
+    events.value[movedIndex].time = newHour;
 };
 
 const calcTop = (hour: string) => {
