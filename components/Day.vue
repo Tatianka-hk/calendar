@@ -33,7 +33,7 @@ import { Hour, Event } from "./";
 import draggable from "vuedraggable";
 import { useRemember } from "~/composables";
 const { getRemember } = useRemember();
-
+const selectedDay = getRemember("selectedDay");
 const getEvents = async (newValue: string) => {
     const res = await API.EVENTS.getEvents(newValue);
     if (!res) {
@@ -49,7 +49,6 @@ const getEvents = async (newValue: string) => {
 watch(
     () => getRemember("selectedDay"),
     async (newValue) => {
-        console.log("selectedDay changed", newValue);
         events.value = await getEvents(newValue);
     },
     { deep: true }
@@ -79,10 +78,10 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
     event.preventDefault();
     event.returnValue = "";
 };
-const events = ref(await getEvents());
+const events = ref(await getEvents(selectedDay));
 
 const refreshEvents = async () => {
-    events.value = await getEvents();
+    events.value = await getEvents(selectedDay);
 };
 const getHourFromTop = (top: number) => {
     const totalHours = top / 62;

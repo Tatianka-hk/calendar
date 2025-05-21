@@ -25,7 +25,8 @@ import { CreateEvent } from "./";
 const { opened, openDialog, closeDialog } = useDialog();
 const emit = defineEmits();
 const mode = ref<string>("day");
-const changeMode = (mode: string) => {
-    emit("changedMode", mode);
+const changeMode = (modeToSet: string) => {
+    mode.value = modeToSet;
+    emit("changedMode", modeToSet);
 };
 </script>

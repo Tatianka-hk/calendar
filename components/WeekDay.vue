@@ -1,6 +1,6 @@
 <template>
     <div
-        class="border-[2px] border-secondary w-[calc(100%/7)]"
+        class="border-[2px] border-secondary w-[calc(100%/7)] h-full"
         ref="containerRef"
     >
         <Event
@@ -26,7 +26,6 @@ const props = defineProps<{
 }>();
 
 const containerRef = ref<HTMLDivElement>();
-console.log("events", props.events);
 const calcTop = (hour: string) => {
     const containerHeight = containerRef.value?.offsetHeight ?? 0;
     const containerTop = containerRef.value?.offsetTop ?? 0;
