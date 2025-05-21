@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
     try {
         const query = getQuery(event);
         const selectedDay = query.day;
+        console.log("selectedDay", selectedDay);
         if (!selectedDay) {
             logger.info("getEvents", "Day is required", StatusEnum.ERROR);
             return sendError(

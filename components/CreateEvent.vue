@@ -5,18 +5,21 @@
             placeholder="Input name"
             label="Name"
             v-model="name"
+            :value="name"
         />
         <Field
             type="text"
             placeholder="Input description"
             label="Description"
             v-model="description"
+            :value="description"
         />
         <Field
             type="datetime-local"
             placeholder="Input date and time"
             label="Date and time"
             v-model="datetime"
+            :value="datetime"
         />
     </FormDialog>
 </template>

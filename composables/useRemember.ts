@@ -6,12 +6,13 @@ export default function useRemember() {
 
     const getRemember = (key: string) => {
         if (!isBrowser) return;
-        if (!values.has(key)) {
-            const stored = localStorage.getItem(`storage-${key}`);
+        const fullKey = `storage-${key}`;
+        if (!values.has(fullKey)) {
+            const stored = localStorage.getItem(fullKey);
             const reactiveRef = ref(stored);
-            values.set(key, reactiveRef);
+            values.set(fullKey, reactiveRef);
         }
-        return values.get(key)!;
+        return values.get(fullKey)?.value!;
     };
 
     const setRemember = (key: string, value: string) => {
@@ -31,6 +32,7 @@ export default function useRemember() {
 
     const handleStorageChange = (e: StorageEvent) => {
         if (e.key && values.has(e.key)) {
+            console.log("siii", e.newValue);
             values.get(e.key)!.value = e.newValue;
         }
     };
