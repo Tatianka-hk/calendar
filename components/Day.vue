@@ -21,6 +21,7 @@
                         position: 'absolute',
                         top: calcTop(element.time) + 'px',
                     }"
+                    :isEditing="true"
                 />
             </template>
         </draggable>
@@ -30,13 +31,11 @@
 import { hours } from "~/static";
 import { Hour, Event } from "./";
 import draggable from "vuedraggable";
-import { onBeforeUnmount } from "vue";
 import { useRemember } from "~/composables";
 const { getRemember } = useRemember();
 const selectedDay = getRemember("selectedDay");
-
-const getEvents = async () => {
-    const res = await API.EVENTS.getEvents();
+const getEvents = async (newValue: string) => {
+    const res = await API.EVENTS.getEvents(newValue);
     if (!res) {
         console.warn("No response from API.EVENTS.getEvents()");
         return [];
@@ -47,7 +46,13 @@ const getEvents = async () => {
     }
     return data.events;
 };
-
+watch(
+    () => getRemember("selectedDay"),
+    async (newValue) => {
+        events.value = await getEvents(newValue);
+    },
+    { deep: true }
+);
 const editAllEvents = async () => {
     const res = await API.EVENTS.editALL(events.value);
     if (!res) {
@@ -73,10 +78,10 @@ const handleBeforeUnload = (event: BeforeUnloadEvent) => {
     event.preventDefault();
     event.returnValue = "";
 };
-const events = ref(await getEvents());
+const events = ref(await getEvents(selectedDay));
 
 const refreshEvents = async () => {
-    events.value = await getEvents();
+    events.value = await getEvents(selectedDay);
 };
 const getHourFromTop = (top: number) => {
     const totalHours = top / 62;

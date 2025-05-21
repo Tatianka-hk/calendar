@@ -4,8 +4,16 @@
     >
         <Button @click="openDialog">Створити подію</Button>
         <div class="flex gap-4">
-            <Button>Тиждень</Button>
-            <Button>День</Button>
+            <Button
+                @click="changeMode('week')"
+                :backgroundColor="mode === 'week' ? '#34558b' : '#00a4b8'"
+                >Тиждень</Button
+            >
+            <Button
+                :backgroundColor="mode === 'day' ? '#34558b' : '#00a4b8'"
+                @click="changeMode('day')"
+                >День</Button
+            >
         </div>
         <div v-if="opened"><CreateEvent :onClose="closeDialog" /></div>
     </div>
@@ -15,4 +23,10 @@ import { Button } from "~/ui";
 import { useDialog } from "../composables";
 import { CreateEvent } from "./";
 const { opened, openDialog, closeDialog } = useDialog();
+const emit = defineEmits();
+const mode = ref<string>("day");
+const changeMode = (modeToSet: string) => {
+    mode.value = modeToSet;
+    emit("changedMode", modeToSet);
+};
 </script>

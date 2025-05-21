@@ -15,6 +15,7 @@
     </div>
 </template>
 <script lang="ts" setup>
+//TODO: background color to tailwind
 const props = defineProps({
     height: Number,
     width: Number,

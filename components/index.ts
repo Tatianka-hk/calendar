@@ -5,3 +5,5 @@ export { default as Event } from "./Event.vue";
 export { default as Header } from "./Header.vue";
 export { default as CreateEvent } from "./CreateEvent.vue";
 export { default as EditEvent } from "./EditEvent.vue";
+export { default as Week } from "./Week.vue";
+export { default as WeekDay } from "./WeekDay.vue";

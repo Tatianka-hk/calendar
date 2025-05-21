@@ -1,9 +1,12 @@
 <template>
     <div class="flex flex-col">
-        <Header />
-        <Day />
+        <Header @changedMode="mode = $event" />
+        <Day v-if="mode === 'day'" />
+        <Week v-else />
     </div>
 </template>
 <script setup lang="ts">
-import { Header, Day } from ".";
+import { Header, Day, Week } from ".";
+import { ref } from "vue";
+const mode = ref<string>("day");
 </script>

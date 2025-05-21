@@ -18,6 +18,10 @@ export default defineEventHandler(async (event) => {
         await newEvent.save();
 
         logger.info("Event", "Event created successfully", StatusEnum.SUCCESS);
+        return {
+            statusCode: 200,
+            statusMessage: "Event created",
+        };
     } catch (error) {
         logger.info("signin", "Internal server error", StatusEnum.ERROR);
         return sendError(

@@ -1,3 +1,7 @@
+import { useRemember } from "../composables";
+
+const { getRemember } = useRemember();
+
 const API = {
     GENERAL: {
         postFetch: async (url: string, body: any) => {
@@ -49,11 +53,10 @@ const API = {
     },
     EVENTS: {
         PREFIX: "/api/app/events",
-        getEvents: async () => {
+        getEvents: async (selectedDay: string) => {
             if (typeof window === "undefined") {
                 return null;
             }
-            const selectedDay = localStorage.getItem("selectedDay");
             const res = await API.GENERAL.getFetch(
                 `${API.EVENTS.PREFIX}/get?day=${selectedDay}`
             );
@@ -83,6 +86,15 @@ const API = {
         deleteEvent: async (id: string) => {
             const res = await API.GENERAL.getFetch(
                 `${API.EVENTS.PREFIX}/delete?id=${id}`
+            );
+            return res;
+        },
+        getWeek: async (selectedDay: string) => {
+            if (typeof window === "undefined") {
+                return null;
+            }
+            const res = await API.GENERAL.getFetch(
+                `${API.EVENTS.PREFIX}/week?day=${selectedDay}`
             );
             return res;
         },
