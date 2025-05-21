@@ -26,6 +26,8 @@
 <script lang="ts" setup>
 import { FormDialog, Field } from "~/ui";
 import { ref } from "vue";
+import { useSnackbar } from "~/composables";
+const { showSnackbar } = useSnackbar();
 interface Props {
     onClose: () => void;
 }
@@ -34,7 +36,7 @@ const name = ref<string>("");
 const description = ref<string>("");
 const datetime = ref<string>("");
 
-const createEvent = () => {
+const createEvent = async () => {
     const date = datetime.value.split("T")[0];
     const time = datetime.value.split("T")[1];
     const event = {
@@ -43,6 +45,10 @@ const createEvent = () => {
         date: date,
         time: time,
     };
-    API.EVENTS.createEvent(event);
+    const res = await API.EVENTS.createEvent(event);
+    const data = await res.json();
+    if (data.statusCode != 200) {
+        showSnackbar(data.statusMessage, "error");
+    }
 };
 </script>

@@ -1,5 +1,7 @@
 <template>
-    <div class="flex justify-center md:justify-between flex-col md:flex-row">
+    <div
+        class="flex justify-center md:justify-between flex-col md:flex-row h-[100vh]"
+    >
         <div><Month /></div>
 
         <Schedule :class="`w-[calc(100%-500px)]`" />
